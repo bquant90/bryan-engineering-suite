@@ -14,6 +14,15 @@ import {
   Fab,
   Backdrop,
   CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ListItemButton,
+  Chip,
 } from '@mui/material';
 import {
   DarkMode,
@@ -21,6 +30,7 @@ import {
   Engineering,
   GitHub,
   LinkedIn,
+  ViewInAr,
 } from '@mui/icons-material';
 import BoxCalculator from './components/BoxCalculator';
 import { CalculatorAPI } from './services/api';
@@ -32,6 +42,7 @@ const App: React.FC = () => {
   });
   
   const [backendStatus, setBackendStatus] = useState<'loading' | 'connected' | 'error'>('loading');
+  const [calculatorMenuOpen, setCalculatorMenuOpen] = useState(false);
 
   // Create theme based on dark mode preference
   const theme = createTheme({
@@ -203,20 +214,47 @@ const App: React.FC = () => {
         </Container>
       </Box>
 
-      {/* Floating Action Button for future features */}
+      {/* Calculator Menu Dialog */}
+      <Dialog
+        open={calculatorMenuOpen}
+        onClose={() => setCalculatorMenuOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle sx={{ textAlign: 'center', pb: 1 }}>
+          <Engineering sx={{ mr: 1, verticalAlign: 'middle' }} />
+          Engineering Calculators
+        </DialogTitle>
+        <DialogContent>
+          <List>
+            {/* Current Calculator */}
+            <ListItem>
+              <ListItemButton>
+                <ListItemIcon>
+                  <ViewInAr color="primary" />
+                </ListItemIcon>
+                <ListItemText
+                  primary="3D Box Calculator"
+                  secondary="Calculate surface area, volume, and practical applications"
+                />
+                <Chip label="Active" color="success" size="small" />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </DialogContent>
+      </Dialog>
+
+      {/* Floating Action Button for calculator menu */}
       <Fab
         color="primary"
-        aria-label="add calculator"
+        aria-label="calculator menu"
         sx={{
           position: 'fixed',
           bottom: 16,
           right: 16,
           display: { xs: 'none', md: 'block' },
         }}
-        onClick={() => {
-          // Future: Open calculator selection dialog
-          console.log('Future: Add more calculators');
-        }}
+        onClick={() => setCalculatorMenuOpen(true)}
       >
         <Engineering />
       </Fab>

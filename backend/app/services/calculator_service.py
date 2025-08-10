@@ -36,10 +36,10 @@ class CalculatorService:
         
         # Weight estimates for different materials (rough estimates in pounds)
         weight_estimates = {
-            'cardboard': round(volume * 0.01, 1),
-            'wood': round(volume * 0.03, 1),
-            'steel': round(volume * 0.28, 1),
-            'plastic': round(volume * 0.02, 1)
+            'Cardboard': round(volume * 0.01, 1),
+            'Wood': round(volume * 0.03, 1),
+            'Steel': round(volume * 0.28, 1),
+            'Plastic': round(volume * 0.02, 1)
         }
         
         # Size comparison

@@ -15,6 +15,14 @@ import {
   useTheme,
   alpha,
 } from '@mui/material';
+
+// Utility function to format numbers with commas
+const formatNumber = (num: number): string => {
+  return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2
+  }).format(num);
+};
 import {
   Calculate as CalculateIcon,
   Straighten as RulerIcon,
@@ -58,6 +66,11 @@ const BoxCalculator: React.FC = () => {
       return;
     }
 
+    if (dimensions.length > 1000 || dimensions.width > 1000 || dimensions.height > 1000) {
+      setError('Please enter dimensions of 1000 inches or less');
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -75,7 +88,9 @@ const BoxCalculator: React.FC = () => {
     }
   };
 
-  const isFormValid = dimensions.length > 0 && dimensions.width > 0 && dimensions.height > 0;
+  // Enhanced validation - check if form is valid AND dimensions are within limits
+  const isFormValid = dimensions.length > 0 && dimensions.width > 0 && dimensions.height > 0 &&
+                     dimensions.length <= 1000 && dimensions.width <= 1000 && dimensions.height <= 1000;
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -193,9 +208,9 @@ const BoxCalculator: React.FC = () => {
                     sx={{ p: 2, mb: 2, bgcolor: alpha(theme.palette.primary.main, 0.05) }}
                   >
                     <Typography variant="subtitle2" color="primary">Surface Area</Typography>
-                    <Typography variant="h6">{result.basic_calculations.surface_area_sqin} sq in</Typography>
+                    <Typography variant="h6">{formatNumber(result.basic_calculations.surface_area_sqin)} sq in</Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {result.basic_calculations.surface_area_sqft} sq ft
+                      {formatNumber(result.basic_calculations.surface_area_sqft)} sq ft
                     </Typography>
                   </Paper>
                   <Paper 
@@ -203,9 +218,9 @@ const BoxCalculator: React.FC = () => {
                     sx={{ p: 2, bgcolor: alpha(theme.palette.secondary.main, 0.05) }}
                   >
                     <Typography variant="subtitle2" color="secondary">Volume</Typography>
-                    <Typography variant="h6">{result.basic_calculations.volume_cuin} cu in</Typography>
+                    <Typography variant="h6">{formatNumber(result.basic_calculations.volume_cuin)} cu in</Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {result.basic_calculations.volume_cuft} cu ft • {result.basic_calculations.volume_liters} liters
+                      {formatNumber(result.basic_calculations.volume_cuft)} cu ft • {formatNumber(result.basic_calculations.volume_liters)} liters
                     </Typography>
                   </Paper>
                 </Box>
@@ -233,10 +248,10 @@ const BoxCalculator: React.FC = () => {
                   </Typography>
                   <Divider sx={{ my: 2 }} />
                   <Typography variant="body2" color="text.secondary">
-                    <strong>Base Perimeter:</strong> {result.geometry.perimeter_base}"
+                    <strong>Base Perimeter:</strong> {formatNumber(result.geometry.perimeter_base)}"
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    <strong>Space Diagonal:</strong> {result.geometry.diagonal}"
+                    <strong>Space Diagonal:</strong> {formatNumber(result.geometry.diagonal)}"
                   </Typography>
                 </Box>
               </CardContent>
@@ -253,17 +268,17 @@ const BoxCalculator: React.FC = () => {
                 </Typography>
                 <Box sx={{ mt: 2 }}>
                   <Typography variant="body1" sx={{ mb: 1 }}>
-                    <strong>Paint Needed:</strong> {result.practical.paint_needed_oz} oz
+                    <strong>Paint Needed:</strong> {formatNumber(result.practical.paint_needed_oz)} oz
                   </Typography>
                   <Typography variant="body1" sx={{ mb: 2 }}>
-                    <strong>Cardboard Sheets:</strong> {result.practical.cardboard_sheets} (12"×12")
+                    <strong>Cardboard Sheets:</strong> {formatNumber(result.practical.cardboard_sheets)} (12"×12")
                   </Typography>
                   <Typography variant="subtitle2" gutterBottom>Weight Estimates:</Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                     {Object.entries(result.practical.weight_estimates).map(([material, weight]) => (
                       <Chip
                         key={material}
-                        label={`${material}: ${weight} lbs`}
+                        label={`${material}: ${formatNumber(weight)} lbs`}
                         variant="outlined"
                         size="small"
                       />
