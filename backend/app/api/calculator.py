@@ -5,9 +5,9 @@ API routes for calculator endpoints
 from fastapi import APIRouter, HTTPException
 from app.models.schemas import (
     BoxDimensions, APIResponse, MaterialCostRequest, 
-    MaterialCostResult
+    MaterialCostResult, WeightRequest, PlanetAPIResponse
 )
-from app.services.calculator_service import CalculatorService, get_material_options
+from app.services.calculator_service import CalculatorService, get_material_options, PlanetCalculatorService
 
 router = APIRouter()
 
@@ -95,3 +95,30 @@ async def api_health_check():
     API health check endpoint
     """
     return {"status": "healthy"}
+
+# Planet Calculator Endpoints
+@router.post("/planet-weight", response_model=PlanetAPIResponse)
+async def calculate_planet_weight(weight_request: WeightRequest):
+    """
+    Calculate weight on all planets and celestial bodies
+    
+    - **weight**: Your weight in pounds (1 to 10,000 lbs)
+    
+    Returns your weight on all planets, the Sun, Moon, and Pluto.
+    """
+    try:
+        result = PlanetCalculatorService.calculate_planet_weights(weight_request)
+        return PlanetAPIResponse(success=True, data=result)
+    
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Planet calculation error: {str(e)}")
+
+@router.get("/planets")
+async def get_planets():
+    """
+    Get information about all planets and celestial bodies
+    """
+    return {
+        "success": True,
+        "data": PlanetCalculatorService.get_planet_info()
+    }

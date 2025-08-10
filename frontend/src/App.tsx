@@ -31,9 +31,13 @@ import {
   GitHub,
   LinkedIn,
   ViewInAr,
+  Public,
 } from '@mui/icons-material';
 import BoxCalculator from './components/BoxCalculator';
+import PlanetCalculator from './components/PlanetCalculator';
 import { CalculatorAPI } from './services/api';
+
+type CalculatorType = 'box' | 'planet';
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState(() => {
@@ -43,6 +47,10 @@ const App: React.FC = () => {
   
   const [backendStatus, setBackendStatus] = useState<'loading' | 'connected' | 'error'>('loading');
   const [calculatorMenuOpen, setCalculatorMenuOpen] = useState(false);
+  const [activeCalculator, setActiveCalculator] = useState<CalculatorType>(() => {
+    const saved = localStorage.getItem('activeCalculator');
+    return (saved as CalculatorType) || 'box';
+  });
 
   // Create theme based on dark mode preference
   const theme = createTheme({
@@ -114,6 +122,25 @@ const App: React.FC = () => {
     localStorage.setItem('darkMode', JSON.stringify(newMode));
   };
 
+  // Switch calculators and save preference
+  const switchCalculator = (calculatorType: CalculatorType) => {
+    setActiveCalculator(calculatorType);
+    localStorage.setItem('activeCalculator', calculatorType);
+    setCalculatorMenuOpen(false);
+  };
+
+  // Get current calculator title
+  const getCalculatorTitle = () => {
+    switch (activeCalculator) {
+      case 'box':
+        return '3D Box Calculator';
+      case 'planet':
+        return 'Planet Weight Calculator';
+      default:
+        return 'Engineering Calculator';
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -135,9 +162,14 @@ const App: React.FC = () => {
       <AppBar position="static" elevation={0} sx={{ bgcolor: 'background.paper', color: 'text.primary' }}>
         <Toolbar>
           <Engineering sx={{ mr: 2, color: 'primary.main' }} />
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
-            Engineering Suite - Bryan Quant
-          </Typography>
+          <Box sx={{ flexGrow: 1 }}>
+            <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
+              Bryan's Engineering Suite
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              {getCalculatorTitle()}
+            </Typography>
+          </Box>
           
           {/* Social Links */}
           <Tooltip title="GitHub">
@@ -190,7 +222,9 @@ const App: React.FC = () => {
 
       {/* Main Content */}
       <Box sx={{ minHeight: 'calc(100vh - 64px)', bgcolor: 'background.default' }}>
-        {backendStatus === 'connected' && <BoxCalculator />}
+        {backendStatus === 'connected' && (
+          activeCalculator === 'box' ? <BoxCalculator /> : <PlanetCalculator />
+        )}
       </Box>
 
       {/* Footer */}
@@ -227,17 +261,41 @@ const App: React.FC = () => {
         </DialogTitle>
         <DialogContent>
           <List>
-            {/* Current Calculator */}
+            {/* 3D Box Calculator */}
             <ListItem>
-              <ListItemButton>
+              <ListItemButton 
+                onClick={() => switchCalculator('box')}
+                selected={activeCalculator === 'box'}
+              >
                 <ListItemIcon>
-                  <ViewInAr color="primary" />
+                  <ViewInAr color={activeCalculator === 'box' ? 'primary' : 'inherit'} />
                 </ListItemIcon>
                 <ListItemText
                   primary="3D Box Calculator"
                   secondary="Calculate surface area, volume, and practical applications"
                 />
-                <Chip label="Active" color="success" size="small" />
+                {activeCalculator === 'box' && (
+                  <Chip label="Active" color="success" size="small" />
+                )}
+              </ListItemButton>
+            </ListItem>
+            
+            {/* Planet Weight Calculator */}
+            <ListItem>
+              <ListItemButton 
+                onClick={() => switchCalculator('planet')}
+                selected={activeCalculator === 'planet'}
+              >
+                <ListItemIcon>
+                  <Public color={activeCalculator === 'planet' ? 'primary' : 'inherit'} />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Planet Weight Calculator"
+                  secondary="Discover your weight across the solar system"
+                />
+                {activeCalculator === 'planet' && (
+                  <Chip label="Active" color="success" size="small" />
+                )}
               </ListItemButton>
             </ListItem>
           </List>

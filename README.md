@@ -5,11 +5,13 @@ A modern full-stack engineering calculation toolkit built with FastAPI and React
 ## 🚀 Tech Stack
 
 **Backend:**
+
 - FastAPI (Python) - High-performance, modern API framework
 - Pydantic - Data validation and settings management
 - Uvicorn - ASGI server
 
 **Frontend:**
+
 - React 18 with TypeScript
 - Vite - Fast build tool and dev server
 - Material-UI (MUI) - Professional component library
@@ -18,6 +20,7 @@ A modern full-stack engineering calculation toolkit built with FastAPI and React
 ## 📊 Features
 
 ### 3D Box Calculator
+
 - Comprehensive surface area and volume calculations
 - Multiple unit conversions (inches, feet, liters)
 - Practical applications (paint estimates, material costs)
@@ -25,6 +28,7 @@ A modern full-stack engineering calculation toolkit built with FastAPI and React
 - Intuitive size comparisons
 
 ### Modern Development Practices
+
 - Type safety with TypeScript and Pydantic
 - Modular architecture following best practices
 - Responsive design with dark/light mode
@@ -34,11 +38,13 @@ A modern full-stack engineering calculation toolkit built with FastAPI and React
 ## 🏃‍♂️ Quick Start
 
 ### Prerequisites
-- Python 3.11+ 
+
+- Python 3.11+
 - Node.js 18+
 - Git
 
 ### Backend Setup
+
 ```bash
 cd backend
 python -m venv venv
@@ -48,6 +54,7 @@ python main.py
 ```
 
 ### Frontend Setup
+
 ```bash
 cd frontend
 npm install
@@ -67,6 +74,7 @@ Once both servers are running:
 ## 🛠️ Development
 
 ### Code Quality
+
 - **Backend:** Follows FastAPI best practices with type hints
 - **Frontend:** TypeScript strict mode with ESLint
 - **Architecture:** Clean separation of concerns
@@ -74,8 +82,8 @@ Once both servers are running:
 
 ## 📱 Screenshots
 
-*Coming soon - Screenshots of the application in action*
+<img src="3D Box Calculator.png" alt="3D Box Calculator Screenshot" width="50%">
 
 ---
 
-*Built with ❤️ using modern web technologies. Star ⭐ this repo if you find it useful!*
+_Built with ❤️ using modern web technologies. Star ⭐ this repo if you find it useful!_

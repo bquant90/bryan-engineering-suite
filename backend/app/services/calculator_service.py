@@ -1,10 +1,11 @@
 """
 Business logic for engineering calculations
 """
-from typing import Dict
+from typing import Dict, List
 from app.models.schemas import (
     BoxDimensions, BoxCalculationResult, DimensionDisplay,
-    BasicCalculations, GeometryInfo, PracticalInfo, MaterialCostResult
+    BasicCalculations, GeometryInfo, PracticalInfo, MaterialCostResult,
+    WeightRequest, PlanetWeight, PlanetWeightResult
 )
 
 class CalculatorService:
@@ -134,3 +135,59 @@ def get_material_options() -> Dict[str, str]:
         "metal": "Metal sheets - heavy duty, industrial",
         "acrylic": "Acrylic sheets - clear, professional appearance"
     }
+
+# Planet Calculator Data and Functions
+PLANETS = {
+    1: {"name": "Sun", "multiplier": 27.9},
+    2: {"name": "Mercury", "multiplier": 0.378},
+    3: {"name": "Venus", "multiplier": 0.907},
+    4: {"name": "Earth", "multiplier": 1.0},
+    5: {"name": "Moon", "multiplier": 0.166},
+    6: {"name": "Mars", "multiplier": 0.377},
+    7: {"name": "Jupiter", "multiplier": 2.36},
+    8: {"name": "Saturn", "multiplier": 0.916},
+    9: {"name": "Uranus", "multiplier": 0.889},
+    10: {"name": "Neptune", "multiplier": 1.12},
+    11: {"name": "Pluto", "multiplier": 0.071}
+}
+
+class PlanetCalculatorService:
+    """Service class for planet weight calculations"""
+    
+    @staticmethod
+    def calculate_planet_weights(weight_request: WeightRequest) -> PlanetWeightResult:
+        """
+        Calculate weight on all planets/celestial bodies
+        """
+        earth_weight = weight_request.weight
+        planet_weights: List[PlanetWeight] = []
+        
+        for planet_id in sorted(PLANETS.keys()):
+            planet_info = PLANETS[planet_id]
+            name = planet_info["name"]
+            multiplier = planet_info["multiplier"]
+            weight_on_planet = round(earth_weight * multiplier, 2)
+            
+            # Create display name with proper grammar
+            if name in ["Sun", "Moon"]:
+                display_name = f"On the {name.lower()}"
+            else:
+                display_name = f"On {name}"
+            
+            planet_weights.append(PlanetWeight(
+                planet_id=planet_id,
+                name=name,
+                weight_on_planet=weight_on_planet,
+                multiplier=multiplier,
+                display_name=display_name
+            ))
+        
+        return PlanetWeightResult(
+            earth_weight=earth_weight,
+            planet_weights=planet_weights
+        )
+    
+    @staticmethod
+    def get_planet_info() -> Dict[str, Dict]:
+        """Get information about all planets/celestial bodies"""
+        return PLANETS

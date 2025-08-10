@@ -4,7 +4,9 @@ import type {
   APIResponse,
   MaterialCostRequest,
   MaterialCostResult,
-  CalculatorInfo
+  CalculatorInfo,
+  WeightRequest,
+  PlanetAPIResponse
 } from '../types/calculator';
 
 // Create axios instance with base configuration
@@ -104,6 +106,33 @@ export class CalculatorAPI {
     } 
     catch (error: any) {
       throw new Error('Backend service unavailable');
+    }
+  }
+
+  // Planet Calculator Methods
+  /**
+   * Calculate planet weights
+   */
+  static async calculatePlanetWeight(request: WeightRequest): Promise<PlanetAPIResponse> {
+    try {
+      const response = await api.post<PlanetAPIResponse>('/planet-weight', request);
+      return response.data;
+    } 
+    catch (error: any) {
+      throw new Error(error.response?.data?.detail || 'Failed to calculate planet weights');
+    }
+  }
+
+  /**
+   * Get planet information
+   */
+  static async getPlanets(): Promise<Record<string, any>> {
+    try {
+      const response = await api.get<{data: Record<string, any>}>('/planets');
+      return response.data.data;
+    } 
+    catch (error: any) {
+      throw new Error(error.response?.data?.detail || 'Failed to fetch planet information');
     }
   }
 }

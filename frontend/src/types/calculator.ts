@@ -70,3 +70,27 @@ export interface CalculatorInfo {
   features?: string[];
   materials?: string[];
 }
+
+// Planet Calculator Types
+export interface WeightRequest {
+  weight: number;
+}
+
+export interface PlanetWeight {
+  planet_id: number;
+  name: string;
+  weight_on_planet: number;
+  multiplier: number;
+  display_name: string;
+}
+
+export interface PlanetWeightResult {
+  earth_weight: number;
+  planet_weights: PlanetWeight[];
+}
+
+export interface PlanetAPIResponse {
+  success: boolean;
+  data?: PlanetWeightResult;
+  error?: string;
+}

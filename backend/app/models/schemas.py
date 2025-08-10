@@ -62,3 +62,27 @@ class MaterialCostResult(BaseModel):
     material: str
     surface_area_sqft: float
     estimated_cost: float
+
+# Planet Calculator Models
+class WeightRequest(BaseModel):
+    """Request model for planet weight calculation"""
+    weight: float = Field(..., gt=0, le=10000, description="Weight in pounds")
+
+class PlanetWeight(BaseModel):
+    """Model for individual planet weight result"""
+    planet_id: int
+    name: str
+    weight_on_planet: float
+    multiplier: float
+    display_name: str  # "On Mars", "On the Sun", etc.
+
+class PlanetWeightResult(BaseModel):
+    """Complete planet weight calculation response"""
+    earth_weight: float
+    planet_weights: list[PlanetWeight]
+
+class PlanetAPIResponse(BaseModel):
+    """API response wrapper for planet calculations"""
+    success: bool
+    data: Optional[PlanetWeightResult] = None
+    error: Optional[str] = None
