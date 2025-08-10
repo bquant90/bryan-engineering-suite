@@ -74,7 +74,7 @@ Once both servers are running:
 
 ## 📱 Screenshots
 
-*Coming soon - Screenshots of the application in action*
+<img src="3D Box Calculator.png" alt="3D Box Calculator Screenshot" width="50%">
 
 ---
 
