@@ -40,3 +40,8 @@ python -m venv venv
 venv\Scripts\activate  # Windows
 pip install -r requirements.txt
 python main.py
+
+### Frontend Setup
+cd frontend
+npm install
+npm run dev
