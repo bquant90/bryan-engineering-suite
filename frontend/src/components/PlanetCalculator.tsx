@@ -13,7 +13,6 @@ import {
   Container,
   useTheme,
   alpha,
-  Grid,
 } from '@mui/material';
 import {
   Calculate as CalculateIcon,
@@ -21,7 +20,7 @@ import {
   Scale as ScaleIcon,
 } from '@mui/icons-material';
 import { CalculatorAPI } from '../services/api';
-import type { WeightRequest, PlanetWeightResult } from '../types/calculator';
+import type { PlanetWeightResult } from '../types/calculator';
 
 // Utility function to format numbers with commas
 const formatNumber = (num: number): string => {

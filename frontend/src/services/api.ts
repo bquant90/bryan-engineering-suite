@@ -9,9 +9,19 @@ import type {
   PlanetAPIResponse
 } from '../types/calculator';
 
+// Configure API base URL based on environment
+const getBaseURL = (): string => {
+  // In production (deployed), use Railway backend
+  if (import.meta.env.PROD) {
+    return 'https://bryan-engineering-suite-production.up.railway.app/api/v1';
+  }
+  // In development, use relative path (proxy handles this)
+  return '/api/v1';
+};
+
 // Create axios instance with base configuration
 const api = axios.create({
-  baseURL: '/api/v1',
+  baseURL: getBaseURL(),
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

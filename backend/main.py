@@ -33,6 +33,7 @@ app.add_middleware(
         "http://localhost:3000",  # Alternative React port
         "http://127.0.0.1:5173",
     ],
+    allow_origin_regex=r"https://.*\.vercel\.app",  # Vercel deployments
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
