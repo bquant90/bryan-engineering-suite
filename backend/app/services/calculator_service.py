@@ -106,17 +106,17 @@ class CalculatorService:
     def _get_size_comparison(volume_liters: float) -> str:
         """Provide relatable size comparisons"""
         if volume_liters < 1:
-            return "About the size of a small water bottle"
+            return "About the size of a small water bottle."
         elif volume_liters < 10:
-            return "About the size of a large water bottle or small shoebox"
+            return "About the size of a large water bottle or small shoebox."
         elif volume_liters < 50:
-            return "About the size of a medium storage box or small microwave"
+            return "About the size of a medium storage box or small microwave."
         elif volume_liters < 200:
-            return "About the size of a large storage container or mini fridge"
+            return "About the size of a large storage container or mini fridge."
         elif volume_liters < 500:
-            return "About the size of a standard refrigerator"
+            return "About the size of a standard refrigerator."
         elif volume_liters < 1000:
-            return "About the size of a large appliance or small room"
+            return "About the size of a large appliance or small room."
         else:
             return "That's a very large box - like a walk-in closet!"
 
