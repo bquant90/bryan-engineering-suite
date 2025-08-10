@@ -33,15 +33,49 @@ A modern full-stack engineering calculation toolkit built with FastAPI and React
 
 ## 🏃‍♂️ Quick Start
 
+### Prerequisites
+- Python 3.11+ 
+- Node.js 18+
+- Git
+
 ### Backend Setup
 ```bash
 cd backend
 python -m venv venv
-venv\Scripts\activate  # Windows
+venv\Scripts\activate  # Windows (or source venv/bin/activate on Mac/Linux)
 pip install -r requirements.txt
 python main.py
+```
 
 ### Frontend Setup
+```bash
 cd frontend
 npm install
 npm run dev
+```
+
+## 🌐 Access
+
+Once both servers are running:
+
+- **🎨 Frontend Application:** http://localhost:5173
+- **📚 API Documentation:** http://localhost:8000/api/docs
+- **📖 Alternative API Docs (ReDoc):** http://localhost:8000/api/redoc
+- **💚 API Health Check:** http://localhost:8000/health
+- **🔌 API Base URL:** http://localhost:8000/api/v1
+
+## 🛠️ Development
+
+### Code Quality
+- **Backend:** Follows FastAPI best practices with type hints
+- **Frontend:** TypeScript strict mode with ESLint
+- **Architecture:** Clean separation of concerns
+- **Styling:** Material-UI design system
+
+## 📱 Screenshots
+
+*Coming soon - Screenshots of the application in action*
+
+---
+
+*Built with ❤️ using modern web technologies. Star ⭐ this repo if you find it useful!*
