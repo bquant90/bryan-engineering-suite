@@ -82,7 +82,9 @@ Once both servers are running:
 
 ## 📱 Screenshots
 
-<img src="3D Box Calculator.png" alt="3D Box Calculator Screenshot" width="50%"> <img src="Planet Weight Calculator.png" alt="Planet Weight Calculator" width="50%">
+|                                3D Box Calculator                                 |                              Planet Weight Calculator                               |
+| :------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------: |
+| <img src="3D Box Calculator.png" alt="3D Box Calculator Screenshot" width="400"> | <img src="Planet Weight Calculator.png" alt="Planet Weight Calculator" width="400"> |
 
 ---
 
