@@ -7,260 +7,535 @@ import {
   Chip,
   Button,
   Container,
+  Link,
+  IconButton,
 } from '@mui/material';
 import {
-  Code,
-  School,
-  Work,
-  LocationOn,
-  Email,
   GitHub,
   LinkedIn,
+  Email,
   Launch,
-  Engineering,
 } from '@mui/icons-material';
 
-const HomePage: React.FC = () => {
-  const skills = [
-    'Salesforce Development', 'JavaScript', 'TypeScript', 'Python', 'React', 
-    'FastAPI', 'Apex', 'SOQL', 'Lightning Web Components', 'Flow Builder',
-    'Material-UI', 'REST APIs', 'Git', 'SQL', 'Problem Solving'
+interface Project {
+  title: string;
+  icon: string;
+  description: string;
+  tags: string[];
+  link: string;
+  featured?: boolean;
+}
+
+interface HomePageProps {
+  darkMode?: boolean;
+}
+
+const HomePage: React.FC<HomePageProps> = ({ darkMode = false }) => {
+  const featuredProjects: Project[] = [
+    {
+      title: 'Hangman Game',
+      icon: '🎮',
+      description: 'Interactive word guessing game with smooth animations and multiple difficulty levels. Built with React and modern UI principles.',
+      tags: ['React', 'TypeScript', 'Game Logic'],
+      link: '/hangman',
+      featured: true,
+    },
+    {
+      title: 'Cipher Tool',
+      icon: '🔐',
+      description: 'Multi-algorithm encryption and decryption tool supporting Caesar cipher, ROT13, and custom algorithms with real-time processing.',
+      tags: ['Security', 'Algorithms', 'Cryptography'],
+      link: '/cipher-tool',
+      featured: true,
+    },
+    {
+      title: 'Periodic Elements Finder',
+      icon: '⚛️',
+      description: 'Interactive periodic table with advanced search, filtering, and detailed element information. Educational and visually appealing.',
+      tags: ['Data Viz', 'Search', 'Education'],
+      link: '/periodic-elements',
+      featured: true,
+    },
   ];
 
-  const experiences = [
+  const engineeringTools: Project[] = [
     {
-      title: 'Salesforce Developer',
-      company: 'Professional Experience',
-      duration: '2+ Years',
-      description: 'Specialized in custom Salesforce solutions, automation, and integrations.'
-    }
+      title: 'Periodic Elements Finder',
+      icon: '⚛️',
+      description: 'Interactive periodic table with search and filtering capabilities',
+      tags: ['Chemistry', 'Data'],
+      link: '/periodic-elements',
+    },
+    {
+      title: 'Cipher/Encryption Tool',
+      icon: '🔐',
+      description: 'Multi-algorithm encryption and decryption utility',
+      tags: ['Security', 'Cryptography'],
+      link: '/cipher-tool',
+    },
+    {
+      title: 'Word Counter & Text Analyzer',
+      icon: '📝',
+      description: 'Advanced text analysis with statistics and insights',
+      tags: ['Text', 'Analysis'],
+      link: '/word-counter',
+    },
+  ];
+
+  const interactiveApps: Project[] = [
+    {
+      title: 'Hangman Game',
+      icon: '🎮',
+      description: 'Classic word guessing game with modern UI',
+      tags: ['Game', 'React'],
+      link: '/hangman',
+    },
+    {
+      title: 'Cellular Simulation',
+      icon: '🦠',
+      description: "Conway's Game of Life with customizable parameters",
+      tags: ['Simulation', 'Algorithms'],
+      link: '/cellular-simulation',
+    },
   ];
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <>
       {/* Hero Section */}
-      <Box sx={{ textAlign: 'center', mb: 6 }}>
-        <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-          Bryan Quant
-        </Typography>
-        <Typography variant="h5" color="text.secondary" gutterBottom>
-          Salesforce Developer & Software Engineer
-        </Typography>
-        <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 600, mx: 'auto', mb: 3 }}>
-          Passionate software developer with 2+ years of Salesforce experience and a strong foundation 
-          in modern web technologies. Currently seeking challenging opportunities to grow and contribute 
-          to innovative software solutions.
-        </Typography>
-        
-        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
+      <Box
+        sx={{
+          background: darkMode 
+            ? 'linear-gradient(135deg, #4c5fbf 0%, #5a3a7f 100%)' 
+            : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          color: 'white',
+          py: { xs: 10, md: 15 },
+          textAlign: 'center',
+          mt: -2,
+        }}
+      >
+        <Container maxWidth="lg">
+          <Typography 
+            variant="h1" 
+            sx={{ 
+              fontSize: { xs: '2.5rem', md: '3.5rem' },
+              fontWeight: 'bold',
+              mb: 2,
+            }}
+          >
+            Bryan Quant
+          </Typography>
+          <Typography 
+            variant="h5" 
+            sx={{ 
+              mb: 1,
+              opacity: 0.95,
+              fontSize: { xs: '1.1rem', md: '1.5rem' },
+            }}
+          >
+            Salesforce Developer & Full-Stack Engineer
+          </Typography>
+          <Typography 
+            variant="h6" 
+            sx={{ 
+              mb: 4,
+              opacity: 0.9,
+              fontSize: { xs: '1rem', md: '1.2rem' },
+            }}
+          >
+            Building modern web applications and engineering tools
+          </Typography>
           <Button
             variant="contained"
-            startIcon={<Email />}
-            href="mailto:bryan.quant@outlook.com"
-            sx={{ textTransform: 'none' }}
+            size="large"
+            onClick={() => {
+              const element = document.getElementById('featured-projects');
+              if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }}
+            sx={{
+              bgcolor: 'white',
+              color: darkMode ? '#4c5fbf' : '#667eea',
+              fontSize: '1.1rem',
+              px: 4,
+              py: 1.5,
+              borderRadius: 2,
+              fontWeight: 600,
+              '&:hover': {
+                bgcolor: 'rgba(255, 255, 255, 0.9)',
+                transform: 'translateY(-2px)',
+              },
+              transition: 'all 0.3s ease',
+            }}
           >
-            Get in Touch
+            View My Work
           </Button>
-          <Button
-            variant="outlined"
-            startIcon={<GitHub />}
-            href="https://github.com/bquant90"
-            target="_blank"
-            rel="noopener noreferrer"
-            sx={{ textTransform: 'none' }}
-          >
-            GitHub
-          </Button>
-          <Button
-            variant="outlined"
-            startIcon={<LinkedIn />}
-            href="https://linkedin.com/in/bryan-quant"
-            target="_blank"
-            rel="noopener noreferrer"
-            sx={{ textTransform: 'none' }}
-          >
-            LinkedIn
-          </Button>
-        </Box>
+        </Container>
       </Box>
 
-      {/* About Section */}
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 4, mb: 6 }}>
-        {/* About Me Card */}
-        <Card sx={{ flex: 1, height: 'fit-content' }}>
-          <CardContent>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <Work sx={{ mr: 1, color: 'primary.main' }} />
-              <Typography variant="h6" component="h2">
-                About Me
-              </Typography>
-            </Box>
-            <Typography variant="body2" color="text.secondary" paragraph>
-              I'm a dedicated software developer with a strong background in Salesforce development 
-              and modern web technologies. My experience spans custom application development, 
-              automation solutions, and full-stack web development.
-            </Typography>
-            <Typography variant="body2" color="text.secondary" paragraph>
-              I thrive in collaborative environments and am always eager to learn new technologies 
-              and tackle complex challenges. My goal is to contribute to meaningful projects that 
-              make a positive impact.
-            </Typography>
-            
-            <Box sx={{ mt: 3 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <LocationOn sx={{ mr: 1, color: 'text.secondary', fontSize: 'small' }} />
-                <Typography variant="body2" color="text.secondary">
-                  Open to Remote & On-site Opportunities
-                </Typography>
-              </Box>
-            </Box>
-          </CardContent>
-        </Card>
-
-        {/* Education Card */}
-        <Card sx={{ flex: 1, height: 'fit-content' }}>
-          <CardContent>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <School sx={{ mr: 1, color: 'primary.main' }} />
-              <Typography variant="h6" component="h2">
-                Education
-              </Typography>
-            </Box>
-            <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-              Texas Tech University
-            </Typography>
-            <Typography variant="body2" color="text.secondary" paragraph>
-              Strong academic foundation with focus on technology and problem-solving
-            </Typography>
-            
-            <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mt: 2 }}>
-              Continuous Learning
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Always staying updated with the latest technologies, certifications, and best practices 
-              in software development and cloud platforms.
-            </Typography>
-          </CardContent>
-        </Card>
-      </Box>
-
-      {/* Skills Section */}
-      <Card sx={{ mb: 6 }}>
-        <CardContent>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-            <Code sx={{ mr: 1, color: 'primary.main' }} />
-            <Typography variant="h6" component="h2">
-              Technical Skills
-            </Typography>
-          </Box>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-            {skills.map((skill) => (
-              <Chip
-                key={skill}
-                label={skill}
-                variant="outlined"
-                color="primary"
-                sx={{ 
-                  '&:hover': { 
-                    backgroundColor: 'primary.main', 
-                    color: 'white' 
-                  } 
+      {/* Featured Projects Section */}
+      <Box 
+        id="featured-projects"
+        sx={{ 
+          bgcolor: darkMode ? '#1e293b' : '#f8fafc',
+          py: 10,
+        }}
+      >
+        <Container maxWidth="lg">
+          <Typography 
+            variant="h2" 
+            align="center"
+            sx={{ 
+              mb: 6,
+              fontWeight: 'bold',
+              fontSize: { xs: '2rem', md: '2.5rem' },
+              color: darkMode ? 'white' : '#1e293b',
+            }}
+          >
+            Featured Projects
+          </Typography>
+          
+          <Box sx={{ 
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
+            gap: 4,
+          }}>
+            {featuredProjects.map((project, index) => (
+              <Card
+                key={index}
+                sx={{
+                  height: '100%',
+                  borderRadius: 3,
+                  bgcolor: darkMode ? '#0f172a' : 'white',
+                  boxShadow: darkMode 
+                    ? '0 4px 6px rgba(0,0,0,0.3)' 
+                    : '0 4px 6px rgba(0,0,0,0.1)',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-5px)',
+                    boxShadow: darkMode 
+                      ? '0 8px 12px rgba(0,0,0,0.4)' 
+                      : '0 8px 12px rgba(0,0,0,0.15)',
+                  },
                 }}
-              />
+              >
+                <CardContent sx={{ p: 3 }}>
+                  <Typography 
+                    variant="h5" 
+                    sx={{ 
+                      color: '#2563eb',
+                      mb: 2,
+                      fontWeight: 'bold',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                    }}
+                  >
+                    <span style={{ fontSize: '1.5rem' }}>{project.icon}</span>
+                    {project.title}
+                  </Typography>
+                  <Typography 
+                    variant="body1" 
+                    sx={{ 
+                      mb: 3, 
+                      lineHeight: 1.6,
+                      color: darkMode ? 'rgba(255, 255, 255, 0.7)' : 'text.secondary',
+                    }}
+                  >
+                    {project.description}
+                  </Typography>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                    {project.tags.map((tag, tagIndex) => (
+                      <Chip
+                        key={tagIndex}
+                        label={tag}
+                        size="small"
+                        sx={{
+                          bgcolor: darkMode ? 'rgba(255, 255, 255, 0.1)' : '#e2e8f0',
+                          color: darkMode ? 'rgba(255, 255, 255, 0.8)' : '#475569',
+                          fontWeight: 500,
+                        }}
+                      />
+                    ))}
+                  </Box>
+                </CardContent>
+              </Card>
             ))}
           </Box>
-        </CardContent>
-      </Card>
+        </Container>
+      </Box>
 
-      {/* Experience Section */}
-      <Card sx={{ mb: 6 }}>
-        <CardContent>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-            <Work sx={{ mr: 1, color: 'primary.main' }} />
-            <Typography variant="h6" component="h2">
-              Professional Experience
+      {/* All Projects Section */}
+      <Box 
+        id="all-projects"
+        sx={{ 
+        py: 10, 
+        bgcolor: darkMode ? '#0f172a' : 'background.default',
+      }}>
+        <Container maxWidth="lg">
+          <Typography 
+            variant="h2" 
+            align="center"
+            sx={{ 
+              mb: 6,
+              fontWeight: 'bold',
+              fontSize: { xs: '2rem', md: '2.5rem' },
+              color: darkMode ? 'white' : '#1e293b',
+            }}
+          >
+            All Projects
+          </Typography>
+
+          {/* Engineering Tools Category */}
+          <Box sx={{ mb: 6 }}>
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                mb: 3,
+                fontWeight: 'bold',
+                color: darkMode ? 'white' : '#1e293b',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                fontSize: { xs: '1.5rem', md: '1.8rem' },
+              }}
+            >
+              🔧 Engineering & Analysis Tools
             </Typography>
-          </Box>
-          {experiences.map((exp, index) => (
-            <Box key={index} sx={{ mb: 3, '&:last-child': { mb: 0 } }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                {exp.title}
-              </Typography>
-              <Typography variant="body2" color="primary.main" sx={{ fontWeight: 'medium' }}>
-                {exp.company} • {exp.duration}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                {exp.description}
-              </Typography>
+            <Box sx={{ 
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+              gap: 3,
+            }}>
+              {engineeringTools.map((project, index) => (
+                <Card
+                  key={index}
+                  sx={{
+                    borderRadius: 2,
+                    bgcolor: darkMode ? '#1e293b' : 'white',
+                    border: '1px solid',
+                    borderColor: darkMode ? 'rgba(255, 255, 255, 0.1)' : '#e2e8f0',
+                    transition: 'border-color 0.3s ease',
+                    '&:hover': {
+                      borderColor: '#2563eb',
+                    },
+                  }}
+                >
+                  <CardContent>
+                    <Typography 
+                      variant="h6" 
+                      sx={{ 
+                        mb: 1,
+                        fontWeight: 'bold',
+                        color: darkMode ? 'white' : '#1e293b',
+                      }}
+                    >
+                      {project.title}
+                    </Typography>
+                    <Typography 
+                      variant="body2" 
+                      sx={{ 
+                        mb: 2,
+                        color: darkMode ? 'rgba(255, 255, 255, 0.7)' : 'text.secondary',
+                      }}
+                    >
+                      {project.description}
+                    </Typography>
+                    <Link
+                      href={project.link}
+                      sx={{
+                        color: '#2563eb',
+                        textDecoration: 'none',
+                        fontWeight: 500,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 0.5,
+                        '&:hover': {
+                          textDecoration: 'underline',
+                        },
+                      }}
+                    >
+                      Launch Tool
+                      <Launch sx={{ fontSize: '1rem' }} />
+                    </Link>
+                  </CardContent>
+                </Card>
+              ))}
             </Box>
-          ))}
-        </CardContent>
-      </Card>
+          </Box>
 
-      {/* What I'm Looking For Section */}
-      <Card sx={{ mb: 6 }}>
-        <CardContent>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-            <Launch sx={{ mr: 1, color: 'primary.main' }} />
-            <Typography variant="h6" component="h2">
-              What I'm Looking For
+          {/* Interactive Applications Category */}
+          <Box>
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                mb: 3,
+                fontWeight: 'bold',
+                color: darkMode ? 'white' : '#1e293b',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                fontSize: { xs: '1.5rem', md: '1.8rem' },
+              }}
+            >
+              🎮 Interactive Applications
             </Typography>
+            <Box sx={{ 
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+              gap: 3,
+            }}>
+              {interactiveApps.map((project, index) => (
+                <Card
+                  key={index}
+                  sx={{
+                    borderRadius: 2,
+                    bgcolor: darkMode ? '#1e293b' : 'white',
+                    border: '1px solid',
+                    borderColor: darkMode ? 'rgba(255, 255, 255, 0.1)' : '#e2e8f0',
+                    transition: 'border-color 0.3s ease',
+                    '&:hover': {
+                      borderColor: '#2563eb',
+                    },
+                  }}
+                >
+                  <CardContent>
+                    <Typography 
+                      variant="h6" 
+                      sx={{ 
+                        mb: 1,
+                        fontWeight: 'bold',
+                        color: darkMode ? 'white' : '#1e293b',
+                      }}
+                    >
+                      {project.title}
+                    </Typography>
+                    <Typography 
+                      variant="body2" 
+                      sx={{ 
+                        mb: 2,
+                        color: darkMode ? 'rgba(255, 255, 255, 0.7)' : 'text.secondary',
+                      }}
+                    >
+                      {project.description}
+                    </Typography>
+                    <Link
+                      href={project.link}
+                      sx={{
+                        color: '#2563eb',
+                        textDecoration: 'none',
+                        fontWeight: 500,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 0.5,
+                        '&:hover': {
+                          textDecoration: 'underline',
+                        },
+                      }}
+                    >
+                      Play Game
+                      <Launch sx={{ fontSize: '1rem' }} />
+                    </Link>
+                  </CardContent>
+                </Card>
+              ))}
+            </Box>
           </Box>
-          <Typography variant="body2" color="text.secondary" paragraph>
-            I'm actively seeking opportunities in software development where I can:
-          </Typography>
-          <Box component="ul" sx={{ pl: 2, m: 0 }}>
-            <Typography component="li" variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-              Apply my Salesforce expertise while expanding into new technologies
-            </Typography>
-            <Typography component="li" variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-              Work on challenging projects that drive business value
-            </Typography>
-            <Typography component="li" variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-              Collaborate with talented teams in an innovative environment
-            </Typography>
-            <Typography component="li" variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-              Continue learning and growing as a full-stack developer
-            </Typography>
-          </Box>
-        </CardContent>
-      </Card>
+        </Container>
+      </Box>
 
-      {/* Project Showcase */}
-      <Card>
-        <CardContent>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-            <Engineering sx={{ mr: 1, color: 'primary.main' }} />
-            <Typography variant="h6" component="h2">
-              Featured Project: Engineering Calculator Suite
-            </Typography>
-          </Box>
-          <Typography variant="body2" color="text.secondary" paragraph>
-            This application showcases my full-stack development skills, combining:
+      {/* About Preview Section */}
+      <Box
+        id="about"
+        sx={{
+          bgcolor: '#1e293b',
+          color: 'white',
+          py: 10,
+          textAlign: 'center',
+        }}
+      >
+        <Container maxWidth="md">
+          <Typography 
+            variant="h2" 
+            sx={{ 
+              mb: 3,
+              fontWeight: 'bold',
+              fontSize: { xs: '2rem', md: '2.5rem' },
+            }}
+          >
+            About Me
           </Typography>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 3 }}>
-            {['FastAPI Backend', 'React Frontend', 'TypeScript', 'Material-UI', 'Railway Deployment', 'Vercel Hosting'].map((tech) => (
-              <Chip key={tech} label={tech} size="small" color="secondary" />
-            ))}
-          </Box>
-          <Typography variant="body2" color="text.secondary" paragraph>
-            The suite includes practical engineering calculators with professional UI/UX, 
-            demonstrating my ability to create production-ready applications with modern 
-            development practices.
+          <Typography 
+            variant="h6" 
+            sx={{ 
+              mb: 4,
+              opacity: 0.9,
+              lineHeight: 1.6,
+            }}
+          >
+            Salesforce Developer with 2+ years of experience building enterprise applications. 
+            Passionate about creating clean, efficient code and user-friendly interfaces.
           </Typography>
           <Button
-            variant="outlined"
-            startIcon={<Launch />}
-            href="https://github.com/bquant90/bryan-engineering-suite"
-            target="_blank"
-            rel="noopener noreferrer"
-            sx={{ textTransform: 'none' }}
+            variant="contained"
+            size="large"
+            sx={{
+              bgcolor: 'white',
+              color: '#1e293b',
+              fontSize: '1rem',
+              px: 4,
+              py: 1.5,
+              borderRadius: 2,
+              fontWeight: 600,
+              '&:hover': {
+                bgcolor: 'rgba(255, 255, 255, 0.9)',
+              },
+            }}
           >
-            View Source Code
+            Learn More
           </Button>
-        </CardContent>
-      </Card>
-    </Container>
+        </Container>
+      </Box>
+
+      {/* Contact Section */}
+      <Box
+        id="contact"
+        sx={{
+          bgcolor: '#0f172a',
+          color: 'white',
+          py: 5,
+          textAlign: 'center',
+        }}
+      >
+        <Container>
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, mb: 3 }}>
+            <IconButton
+              href="https://github.com/bquant90"
+              target="_blank"
+              sx={{ color: 'white' }}
+            >
+              <GitHub />
+            </IconButton>
+            <IconButton
+              href="https://linkedin.com/in/bryan-quant"
+              target="_blank"
+              sx={{ color: 'white' }}
+            >
+              <LinkedIn />
+            </IconButton>
+            <IconButton
+              href="mailto:bquant90@gmail.com"
+              sx={{ color: 'white' }}
+            >
+              <Email />
+            </IconButton>
+          </Box>
+          <Typography variant="body2" sx={{ opacity: 0.8 }}>
+            © 2025 Bryan Quant. Built with modern web technologies.
+          </Typography>
+        </Container>
+      </Box>
+    </>
   );
 };
 

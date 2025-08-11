@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     # App info
     app_name: str = "Bryan Engineering Suite API"
     app_version: str = "1.0.0"
-    description: str = "Professional engineering calculation tools"
+    description: str = "Personal Site featuring Personal Projects"
     
     # Server settings
     host: str = "0.0.0.0"

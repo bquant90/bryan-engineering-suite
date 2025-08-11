@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import {
   ThemeProvider,
   createTheme,
@@ -6,44 +7,37 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Container,
   Box,
   IconButton,
   Tooltip,
   Alert,
   Backdrop,
   CircularProgress,
-  Tabs,
-  Tab,
+  Button,
 } from '@mui/material';
 import {
   DarkMode,
   LightMode,
-  Engineering,
-  GitHub,
-  LinkedIn,
-  ViewInAr,
-  Public,
-  Home,
 } from '@mui/icons-material';
-import BoxCalculator from './components/BoxCalculator';
-import PlanetCalculator from './components/PlanetCalculator';
 import HomePage from './components/HomePage';
+import AboutPage from './components/AboutPage';
+import ContactPage from './components/ContactPage';
+import HangmanGame from './components/HangmanGame';
+import CipherTool from './components/CipherTool';
+import PeriodicElements from './components/PeriodicElements';
+import WordCounter from './components/WordCounter';
+import CellularSimulation from './components/CellularSimulation';
 import { CalculatorAPI } from './services/api';
 
-type PageType = 'home' | 'box' | 'planet';
-
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('darkMode');
     return saved ? JSON.parse(saved) : false;
   });
   
   const [backendStatus, setBackendStatus] = useState<'loading' | 'connected' | 'error'>('loading');
-  const [activePage, setActivePage] = useState<PageType>(() => {
-    const saved = localStorage.getItem('activePage');
-    return (saved as PageType) || 'home';
-  });
 
   // Create theme based on dark mode preference
   const theme = createTheme({
@@ -115,23 +109,21 @@ const App: React.FC = () => {
     localStorage.setItem('darkMode', JSON.stringify(newMode));
   };
 
-  // Switch pages and save preference
-  const switchPage = (pageType: PageType) => {
-    setActivePage(pageType);
-    localStorage.setItem('activePage', pageType);
-  };
-
-  // Get current page title
-  const getPageTitle = () => {
-    switch (activePage) {
-      case 'home':
-        return 'Professional Portfolio & Engineering Tools';
-      case 'box':
-        return '3D Box Calculator';
-      case 'planet':
-        return 'Planet Weight Calculator';
-      default:
-        return 'Engineering Suite';
+  // Scroll to section
+  const scrollToSection = (sectionId: string) => {
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
@@ -146,114 +138,109 @@ const App: React.FC = () => {
       >
         <Box textAlign="center">
           <CircularProgress color="inherit" />
-          <Typography variant="h6" sx={{ mt: 2 }}>
-            Connecting to backend...
-          </Typography>
         </Box>
       </Backdrop>
 
-      {/* App Bar */}
-      <AppBar position="static" elevation={0} sx={{ bgcolor: 'background.paper', color: 'text.primary' }}>
+      {/* Navigation Bar - Always visible */}
+      <AppBar 
+        position="fixed" 
+        elevation={0} 
+        sx={{ 
+          bgcolor: darkMode ? 'rgba(30, 41, 59, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+          backdropFilter: 'blur(10px)',
+          color: 'text.primary',
+          borderBottom: '1px solid',
+          borderColor: darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+        }}
+      >
         <Toolbar>
-          <Engineering sx={{ mr: 2, color: 'primary.main' }} />
-          <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
-              Bryan's Engineering Suite
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              {getPageTitle()}
-            </Typography>
+          <Typography 
+            variant="h6" 
+            component="div" 
+            sx={{ 
+              fontWeight: 'bold',
+              color: '#2563eb',
+              cursor: 'pointer',
+              fontSize: '1.5rem',
+            }}
+            onClick={() => navigate('/')}
+          >
+            Bryan Quant
+          </Typography>
+          
+          <Box sx={{ flexGrow: 1 }} />
+          
+          <Box sx={{ display: 'flex', gap: 3 }}>
+            <Button
+              color="inherit"
+              onClick={() => navigate('/')}
+              sx={{ 
+                fontWeight: location.pathname === '/' ? 600 : 500,
+                color: location.pathname === '/' ? 'primary.main' : 'text.primary',
+              }}
+            >
+              Home
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => scrollToSection('all-projects')}
+              sx={{ 
+                fontWeight: 500,
+                color: 'text.primary',
+              }}
+            >
+              Projects
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => navigate('/about')}
+              sx={{ 
+                fontWeight: 500,
+                color: 'text.primary',
+              }}
+            >
+              About
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => navigate('/contact')}
+              sx={{ 
+                fontWeight: 500,
+                color: 'text.primary',
+              }}
+            >
+              Contact
+            </Button>
           </Box>
-          
-          {/* Social Links */}
-          <Tooltip title="GitHub">
-            <IconButton 
-              href="https://github.com/bquant90" 
-              target="_blank" 
-              rel="noopener noreferrer"
-            >
-              <GitHub />
-            </IconButton>
-          </Tooltip>
-          
-          <Tooltip title="LinkedIn">
-            <IconButton 
-              href="https://linkedin.com/in/bryan-quant" 
-              target="_blank" 
-              rel="noopener noreferrer"
-            >
-              <LinkedIn />
-            </IconButton>
-          </Tooltip>
-
-          {/* Dark Mode Toggle */}
-          <Tooltip title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
-            <IconButton onClick={toggleDarkMode} sx={{ ml: 1 }}>
-              {darkMode ? <LightMode /> : <DarkMode />}
-            </IconButton>
-          </Tooltip>
         </Toolbar>
       </AppBar>
 
-      {/* Navigation Tabs */}
-      <Box sx={{ 
-        bgcolor: 'background.paper', 
-        borderBottom: 1, 
-        borderColor: 'divider',
-        display: 'flex',
-        justifyContent: 'center',
-        boxShadow: '0 2px 4px -1px rgb(0 0 0 / 0.06)',
-      }}>
-        <Tabs 
-          value={activePage} 
-          onChange={(_, newValue) => switchPage(newValue)}
-          variant="scrollable"
-          scrollButtons="auto"
-          sx={{ 
-            '& .MuiTab-root': {
-              minWidth: { xs: 80, sm: 140 },
-              textTransform: 'none',
-              fontSize: '0.95rem',
-              fontWeight: 500,
-              py: 2,
-              '&.Mui-selected': {
-                color: 'primary.main',
-                fontWeight: 600,
-              },
+      {/* Spacer for fixed navbar */}
+      <Toolbar />
+
+      {/* Dark Mode Toggle - Bottom Right */}
+      <Box sx={{ position: 'fixed', bottom: 20, right: 20, zIndex: 1000 }}>
+        <Tooltip title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
+          <IconButton 
+            onClick={toggleDarkMode} 
+            sx={{ 
+              bgcolor: darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+              color: darkMode ? 'white' : 'black',
+              backdropFilter: 'blur(10px)',
+              boxShadow: 3,
               '&:hover': {
-                color: 'primary.main',
-                opacity: 0.8,
-              },
-            },
-            '& .MuiTabs-indicator': {
-              height: 3,
-              borderRadius: '3px 3px 0 0',
-            }
-          }}
-        >
-          <Tab 
-            icon={<Home />} 
-            iconPosition="start"
-            label="Home" 
-            value="home" 
-          />
-          <Tab 
-            icon={<ViewInAr />} 
-            iconPosition="start"
-            label="3D Box Calculator" 
-            value="box" 
-          />
-          <Tab 
-            icon={<Public />} 
-            iconPosition="start"
-            label="Planet Calculator" 
-            value="planet" 
-          />
-        </Tabs>
+                bgcolor: darkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.95)',
+                boxShadow: 4,
+              }
+            }}
+          >
+            {darkMode ? <LightMode /> : <DarkMode />}
+          </IconButton>
+        </Tooltip>
       </Box>
 
       {/* Backend Status Alert */}
-      {backendStatus === 'error' && (
+      {backendStatus === 'error' && location.pathname !== '/' && (
         <Alert 
           severity="warning" 
           sx={{ m: 2 }}
@@ -272,34 +259,27 @@ const App: React.FC = () => {
       )}
 
       {/* Main Content */}
-      <Box sx={{ minHeight: 'calc(100vh - 64px)', bgcolor: 'background.default' }}>
-        {activePage === 'home' && <HomePage />}
-        {activePage === 'box' && backendStatus === 'connected' && <BoxCalculator />}
-        {activePage === 'planet' && backendStatus === 'connected' && <PlanetCalculator />}
+      <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
+        <Routes>
+          <Route path="/" element={<HomePage darkMode={darkMode} />} />
+          <Route path="/about" element={<AboutPage darkMode={darkMode} />} />
+          <Route path="/contact" element={<ContactPage darkMode={darkMode} />} />
+          <Route path="/hangman" element={<HangmanGame />} />
+          <Route path="/cipher-tool" element={<CipherTool />} />
+          <Route path="/periodic-elements" element={<PeriodicElements />} />
+          <Route path="/word-counter" element={<WordCounter />} />
+          <Route path="/cellular-simulation" element={<CellularSimulation />} />
+        </Routes>
       </Box>
-
-      {/* Footer */}
-      <Box
-        component="footer"
-        sx={{
-          bgcolor: 'background.paper',
-          borderTop: 1,
-          borderColor: 'divider',
-          py: 3,
-          mt: 4,
-        }}
-      >
-        <Container maxWidth="lg">
-          <Typography variant="body2" color="text.secondary" align="center">
-            Built with FastAPI, React, TypeScript & Material-UI
-          </Typography>
-          <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
-            © 2025 Bryan Quant - Professional Engineering Tools
-          </Typography>
-        </Container>
-      </Box>
-
     </ThemeProvider>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
   );
 };
 
