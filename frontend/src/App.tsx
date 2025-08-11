@@ -11,18 +11,10 @@ import {
   IconButton,
   Tooltip,
   Alert,
-  Fab,
   Backdrop,
   CircularProgress,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  ListItemButton,
-  Chip,
+  Tabs,
+  Tab,
 } from '@mui/material';
 import {
   DarkMode,
@@ -32,12 +24,14 @@ import {
   LinkedIn,
   ViewInAr,
   Public,
+  Home,
 } from '@mui/icons-material';
 import BoxCalculator from './components/BoxCalculator';
 import PlanetCalculator from './components/PlanetCalculator';
+import HomePage from './components/HomePage';
 import { CalculatorAPI } from './services/api';
 
-type CalculatorType = 'box' | 'planet';
+type PageType = 'home' | 'box' | 'planet';
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState(() => {
@@ -46,10 +40,9 @@ const App: React.FC = () => {
   });
   
   const [backendStatus, setBackendStatus] = useState<'loading' | 'connected' | 'error'>('loading');
-  const [calculatorMenuOpen, setCalculatorMenuOpen] = useState(false);
-  const [activeCalculator, setActiveCalculator] = useState<CalculatorType>(() => {
-    const saved = localStorage.getItem('activeCalculator');
-    return (saved as CalculatorType) || 'box';
+  const [activePage, setActivePage] = useState<PageType>(() => {
+    const saved = localStorage.getItem('activePage');
+    return (saved as PageType) || 'home';
   });
 
   // Create theme based on dark mode preference
@@ -122,22 +115,23 @@ const App: React.FC = () => {
     localStorage.setItem('darkMode', JSON.stringify(newMode));
   };
 
-  // Switch calculators and save preference
-  const switchCalculator = (calculatorType: CalculatorType) => {
-    setActiveCalculator(calculatorType);
-    localStorage.setItem('activeCalculator', calculatorType);
-    setCalculatorMenuOpen(false);
+  // Switch pages and save preference
+  const switchPage = (pageType: PageType) => {
+    setActivePage(pageType);
+    localStorage.setItem('activePage', pageType);
   };
 
-  // Get current calculator title
-  const getCalculatorTitle = () => {
-    switch (activeCalculator) {
+  // Get current page title
+  const getPageTitle = () => {
+    switch (activePage) {
+      case 'home':
+        return 'Professional Portfolio & Engineering Tools';
       case 'box':
         return '3D Box Calculator';
       case 'planet':
         return 'Planet Weight Calculator';
       default:
-        return 'Engineering Calculator';
+        return 'Engineering Suite';
     }
   };
 
@@ -167,7 +161,7 @@ const App: React.FC = () => {
               Bryan's Engineering Suite
             </Typography>
             <Typography variant="caption" color="text.secondary">
-              {getCalculatorTitle()}
+              {getPageTitle()}
             </Typography>
           </Box>
           
@@ -201,6 +195,63 @@ const App: React.FC = () => {
         </Toolbar>
       </AppBar>
 
+      {/* Navigation Tabs */}
+      <Box sx={{ 
+        bgcolor: 'background.paper', 
+        borderBottom: 1, 
+        borderColor: 'divider',
+        display: 'flex',
+        justifyContent: 'center',
+        boxShadow: '0 2px 4px -1px rgb(0 0 0 / 0.06)',
+      }}>
+        <Tabs 
+          value={activePage} 
+          onChange={(_, newValue) => switchPage(newValue)}
+          variant="scrollable"
+          scrollButtons="auto"
+          sx={{ 
+            '& .MuiTab-root': {
+              minWidth: { xs: 80, sm: 140 },
+              textTransform: 'none',
+              fontSize: '0.95rem',
+              fontWeight: 500,
+              py: 2,
+              '&.Mui-selected': {
+                color: 'primary.main',
+                fontWeight: 600,
+              },
+              '&:hover': {
+                color: 'primary.main',
+                opacity: 0.8,
+              },
+            },
+            '& .MuiTabs-indicator': {
+              height: 3,
+              borderRadius: '3px 3px 0 0',
+            }
+          }}
+        >
+          <Tab 
+            icon={<Home />} 
+            iconPosition="start"
+            label="Home" 
+            value="home" 
+          />
+          <Tab 
+            icon={<ViewInAr />} 
+            iconPosition="start"
+            label="3D Box Calculator" 
+            value="box" 
+          />
+          <Tab 
+            icon={<Public />} 
+            iconPosition="start"
+            label="Planet Calculator" 
+            value="planet" 
+          />
+        </Tabs>
+      </Box>
+
       {/* Backend Status Alert */}
       {backendStatus === 'error' && (
         <Alert 
@@ -222,9 +273,9 @@ const App: React.FC = () => {
 
       {/* Main Content */}
       <Box sx={{ minHeight: 'calc(100vh - 64px)', bgcolor: 'background.default' }}>
-        {backendStatus === 'connected' && (
-          activeCalculator === 'box' ? <BoxCalculator /> : <PlanetCalculator />
-        )}
+        {activePage === 'home' && <HomePage />}
+        {activePage === 'box' && backendStatus === 'connected' && <BoxCalculator />}
+        {activePage === 'planet' && backendStatus === 'connected' && <PlanetCalculator />}
       </Box>
 
       {/* Footer */}
@@ -248,74 +299,6 @@ const App: React.FC = () => {
         </Container>
       </Box>
 
-      {/* Calculator Menu Dialog */}
-      <Dialog
-        open={calculatorMenuOpen}
-        onClose={() => setCalculatorMenuOpen(false)}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle sx={{ textAlign: 'center', pb: 1 }}>
-          <Engineering sx={{ mr: 1, verticalAlign: 'middle' }} />
-          Engineering Calculators
-        </DialogTitle>
-        <DialogContent>
-          <List>
-            {/* 3D Box Calculator */}
-            <ListItem>
-              <ListItemButton 
-                onClick={() => switchCalculator('box')}
-                selected={activeCalculator === 'box'}
-              >
-                <ListItemIcon>
-                  <ViewInAr color={activeCalculator === 'box' ? 'primary' : 'inherit'} />
-                </ListItemIcon>
-                <ListItemText
-                  primary="3D Box Calculator"
-                  secondary="Calculate surface area, volume, and practical applications"
-                />
-                {activeCalculator === 'box' && (
-                  <Chip label="Active" color="success" size="small" />
-                )}
-              </ListItemButton>
-            </ListItem>
-            
-            {/* Planet Weight Calculator */}
-            <ListItem>
-              <ListItemButton 
-                onClick={() => switchCalculator('planet')}
-                selected={activeCalculator === 'planet'}
-              >
-                <ListItemIcon>
-                  <Public color={activeCalculator === 'planet' ? 'primary' : 'inherit'} />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Planet Weight Calculator"
-                  secondary="Discover your weight across the solar system"
-                />
-                {activeCalculator === 'planet' && (
-                  <Chip label="Active" color="success" size="small" />
-                )}
-              </ListItemButton>
-            </ListItem>
-          </List>
-        </DialogContent>
-      </Dialog>
-
-      {/* Floating Action Button for calculator menu */}
-      <Fab
-        color="primary"
-        aria-label="calculator menu"
-        sx={{
-          position: 'fixed',
-          bottom: 16,
-          right: 16,
-          display: { xs: 'none', md: 'block' },
-        }}
-        onClick={() => setCalculatorMenuOpen(true)}
-      >
-        <Engineering />
-      </Fab>
     </ThemeProvider>
   );
 };
